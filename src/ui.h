@@ -6,6 +6,10 @@ const int screenwidth = GetScreenWidth();
 const int screenheight = GetScreenHeight();
 
 //ui
+// void drawbg (youre gonna use a 1800x7200 image bro split dat into 4 later so u can render it teh same way you did for bouldering)
+
+
+
 const int count = 3;
 int selected =0;
 const char*items[] ={
@@ -15,10 +19,10 @@ const char*items[] ={
 };
 void menuui(){
 
-    if(IsKeyPressed(KEY_A)){
+    if(IsKeyPressed(KEY_S)){
         selected = (selected+1)% count;
     }
-    if(IsKeyPressed(KEY_S)){
+    if(IsKeyPressed(KEY_W)){
         selected = (selected-1+count)% count;
     }
     if(IsKeyPressed(KEY_ENTER)){
@@ -46,4 +50,12 @@ void drawmenuui(){
         }
         DrawText(items[i],x,y,35,c);
     }
+}
+
+void createplayer(float x, float y){
+    player p;
+    p.pos = {x,y};
+    p.speed = 40;
+    p.keys = 0;
+    
 }

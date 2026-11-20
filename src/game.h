@@ -3,16 +3,16 @@
 #include "raylib.h"
 struct player{
     Vector2 pos;
-    Vector2 size;
+    Vector2 size ={50,50};
     float speed;
-    Color color;
+    Color color = RED;
     enum location{
         section1,
         section2,
         garden,
         section4
     };
-    int keys = 0;
+    int keys;
 
 };
 struct keypiece{
