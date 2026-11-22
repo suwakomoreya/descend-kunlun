@@ -5,11 +5,14 @@
 #include "collision.h"
 #include "nlohmann/json.hpp"
 
+
 int main(){
     InitWindow(900,900, "Descent");
     SetTargetFPS(60);
     SetExitKey(KEY_NULL);
     
+
+
     std::fstream file("assets/mapped.json");
     json map;
     file >>map;
@@ -36,6 +39,12 @@ int main(){
                     DrawRectangleLinesEx(block,1,RED);
                 }
                 EndMode2D();
+                break;
+            case screen::tutorial:
+                break;
+            case screen::exit:
+                running = false;
+            
         }
         
         DrawText("yoooohooo", 500,350,30, WHITE);

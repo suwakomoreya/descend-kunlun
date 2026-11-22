@@ -1,9 +1,9 @@
-#pragma once
 #include <raylib.h>
 #include <bits/stdc++.h>
 #include <nlohmann/json.hpp>
 using json =nlohmann::json;
 extern std::vector<Rectangle> collision;
+std::vector<Rectangle> collision;
 void loadcollisions(const json&map){
     for(const auto& layer : map["layers"]){
         if(layer["name"] != "collide"){

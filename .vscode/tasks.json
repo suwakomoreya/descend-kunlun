@@ -4,11 +4,12 @@
         {
         "label": "build",
         "type": "process",
-        "command": "g++",
+        "command": "/opt/local/bin/x86_64-w64-mingw32-g++",
         "args": [
             "${workspaceFolder}/src/main.cpp",
+            "${workspaceFolder}/src/collision.cpp",
             "-o", "${workspaceFolder}/game.exe",
-            "-std=c++17",
+            "-std=c++20",
             "-Wall",
             "-lraylib", "-lopengl32", "-lgdi32", "-lwinmm"
         ],
@@ -22,6 +23,29 @@
         "dependsOn": "build",
         "problemMatcher": [],
         "group": { "kind": "build", "isDefault": true }
+        },
+        {
+        "label": "build for mac",
+        "type": "process",
+        "command": "/usr/bin/clang++",
+        "args": [
+            "${workspaceFolder}/src/main.cpp",
+            "${workspaceFolder}/src/collision.cpp",
+            "-o", "${workspaceFolder}/game",
+            "-std=c++20",
+            "-Wall",
+            "-I${workspaceFolder}",
+            "-I${env:HOME}/.local/include",
+            "-L${env:HOME}/.local/lib",
+            "-lraylib",
+            "-framework", "OpenGL",
+            "-framework", "Cocoa",
+            "-framework", "IOKit",
+            "-framework", "CoreVideo"
+        ],
+        "problemMatcher": ["$gcc"],
+        "group": "build",
+        "detail": "Native macOS build with clang++ (C++20)"
         }
     ]
 }

@@ -9,7 +9,8 @@ const int screenheight = GetScreenHeight();
 using json = nlohmann::json;
 //ui
 // void drawbg (youre gonna use a 1800x7200 image bro split dat into 4 later so u can render it teh same way you did for bouldering)
-
+extern current = screen::game;
+extern current = screen::tutorial;
 Camera2D cammain = {0};
 
 const int count = 3;
@@ -74,3 +75,10 @@ void followplayer(Camera2D& cam, const  player&p, float lanecenterX){
     cam.target.y += (desired - cam.target.y) *smooth *GetFrameTime();
     cam.target.x = lanecenterX;
 }
+
+void tutorialscreen(){
+    DrawText("How to Play", 40,150,50,WHITE);
+    DrawRectangle(100,screenheight/2,700,400,WHITE);
+    
+}
+
