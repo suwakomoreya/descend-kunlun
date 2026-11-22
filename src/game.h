@@ -1,6 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 #include "raylib.h"
+#include "nlohmann/json.hpp"
 struct player{
     Vector2 pos;
     Vector2 size ={50,50};

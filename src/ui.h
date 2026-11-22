@@ -2,13 +2,14 @@
 #include <bits/stdc++.h>
 #include "raylib.h"
 #include "game.h"
+#include "nlohmann/json.hpp"
 const int screenwidth = GetScreenWidth();
 const int screenheight = GetScreenHeight();
-
+using json = nlohmann::json;
 //ui
 // void drawbg (youre gonna use a 1800x7200 image bro split dat into 4 later so u can render it teh same way you did for bouldering)
 
-
+Camera2D cammain = {0};
 
 const int count = 3;
 int selected =0;
@@ -51,11 +52,25 @@ void drawmenuui(){
         DrawText(items[i],x,y,35,c);
     }
 }
-
-void createplayer(float x, float y){
+player createplayer(float x, float y){
     player p;
     p.pos = {x,y};
     p.speed = 40;
     p.keys = 0;
-    
+    return p;
+}
+void drawplayer(const player&p){
+    DrawRectangleV(p.pos,p.size,p.color);
+}
+void followplayer(Camera2D& cam, const  player&p, float lanecenterX){
+    const float trigger = 400;
+    const float smooth = 3.0f;
+    float playerY = p.pos.y + p.size.y/2;
+
+    float desired = playerY + (screenheight/2.0f-trigger);
+    if(desired>screenheight/2.0f){
+        desired = screenheight/2.0f;
+    }
+    cam.target.y += (desired-cam.target.y)*smooth*GetFrameTime();
+    cam.target.x = lanecenterX;
 }
