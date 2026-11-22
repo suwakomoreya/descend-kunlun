@@ -3,6 +3,7 @@
 #include "ui.h"
 #include "game.h"
 #include "collision.h"
+#include "collision.h"
 #include "nlohmann/json.hpp"
 
 screen current = screen::menu;
@@ -29,7 +30,7 @@ int main(){
     json map;
     file >>map;
     loadcollisions(map);
-
+    loadtterrain(map);
     player p1 = createplayer(50,50);
     while(!WindowShouldClose() && running){
         if(current == screen::menu){
@@ -38,7 +39,9 @@ int main(){
 
         BeginDrawing();
         ClearBackground(BLACK);
+        // remove these after release, its just for testing.
         testmode(p1);
+
         switch(current){
             case screen::menu:
                 drawmenuui();
@@ -50,6 +53,9 @@ int main(){
                 drawplayer(p1);
                 for(const auto& block : collision){
                     DrawRectangleLinesEx(block,1,RED);
+                }
+                for(const auto& block : terrain){
+                    DrawRectangleLinesEx(block,1,LIGHTGRAY);
                 }
                 EndMode2D();
                 if(IsKeyPressed(KEY_ESCAPE)){

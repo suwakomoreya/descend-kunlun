@@ -5,3 +5,6 @@
 using json = nlohmann::json;
 extern std::vector<Rectangle> collision;
 void loadcollisions(const json& map);
+
+extern std::vector<Rectangle> terrain;
+void loadtterrain(const json& map);
