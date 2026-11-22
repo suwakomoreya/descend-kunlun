@@ -18,17 +18,19 @@ const char*items[] ={
     "Tutorial",
     "Exit"
 };
-void menuui(){
+void menuui(player&p){
 
-    if(IsKeyPressed(KEY_S)){
+    if(IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)){
         selected = (selected+1)% count;
     }
-    if(IsKeyPressed(KEY_W)){
+    if(IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)){
         selected = (selected-1+count)% count;
     }
     if(IsKeyPressed(KEY_ENTER)){
         if(selected==0){
             current = screen::game;
+            p.pos.x = 393.0f;
+            p.pos.y = 526.0f;
         }
         if(selected==1){
             current = screen::tutorial;
@@ -77,29 +79,29 @@ void updatepphysics(player&p, float dt){
 
     const float gravity = 700.0f;
     const float jumpimpulse =500.0f;
-    const float movespeed = 100.0f;
+    const float movespeed = 250.0f;
     
-    p.vel.x =0.0f; // leftrighties
-    if(IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)){
+    p.vel.x = 0.0f; // leftrighties
+    if(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)){
         p.vel.x = -movespeed;
     }
-    if(IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)){
+    if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)){
         p.vel.x = movespeed;
     }
 
-    if((IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))&& p.grounded){
+    if((IsKeyPressed(KEY_UP)|| IsKeyDown(KEY_SPACE) || IsKeyPressed(KEY_W))&& p.grounded){
         p.vel.y = -jumpimpulse;
         p.grounded = false;
     }
     // cut dat jump on release
-    if((IsKeyReleased(KEY_SPACE) || IsKeyReleased(KEY_UP) || IsKeyReleased(KEY_W))&& p.vel.y < 0.0f){
+    if((IsKeyPressed(KEY_SPACE) || IsKeyReleased(KEY_UP) || IsKeyReleased(KEY_W))&& p.vel.y < 0.0f){
         p.vel.y *= 0.5f;
     }
 
     //gravity bro its gravity
     p.vel.y +=gravity*dt; // velocity (you know itd probably be 9.8 for my gravity? )
 
-    p.vel.x += p.vel.x * dt; 
+    p.pos.x += p.vel.x * dt; 
 
     Rectangle playerbounds = {
         p.pos.x,p.pos.y,p.size.x,p.size.y
@@ -143,6 +145,18 @@ void updatepphysics(player&p, float dt){
 void tutorialscreen(){
     DrawText("How to Play", 40,150,50,WHITE);
     DrawRectangle(GetScreenWidth()/2-350,GetScreenHeight()/2-200,700,400,WHITE);
-    
+    DrawText("A-D or Left Right on the arrow keys",GetScreenWidth()/2-300,450,20,BLACK);
+    if(IsKeyPressed(KEY_ESCAPE)){
+        current = screen::menu;
+    }
 }
 
+void testmode(player&p){
+    float playerx = p.pos.x;
+    float playery= p.pos.y;
+    float velx = p.vel.x;
+    float vely = p.vel.y;
+
+    DrawText(TextFormat("pos: %f,%f", playerx,playery),50,40,30,GREEN);
+    DrawText(TextFormat("vel: %f,%f",velx,vely),50,90,30,GREEN);
+}

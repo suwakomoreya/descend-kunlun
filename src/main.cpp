@@ -14,7 +14,10 @@ int main(){
     SetTargetFPS(60);
     SetExitKey(KEY_NULL);
     
-
+    cammain.target = {450,75};
+    cammain.offset =  {450,450};
+    cammain.rotation = 0.0f;
+    cammain.zoom = 1.0f;
     int screenwidth = GetScreenWidth();
     int screenheight = GetScreenHeight();
 
@@ -30,12 +33,12 @@ int main(){
     player p1 = createplayer(50,50);
     while(!WindowShouldClose() && running){
         if(current == screen::menu){
-            menuui();
+            menuui(p1);
         }
 
         BeginDrawing();
         ClearBackground(BLACK);
-
+        testmode(p1);
         switch(current){
             case screen::menu:
                 drawmenuui();
@@ -49,6 +52,10 @@ int main(){
                     DrawRectangleLinesEx(block,1,RED);
                 }
                 EndMode2D();
+                if(IsKeyPressed(KEY_ESCAPE)){
+                    current = screen::menu;
+                }
+                
                 break;
             case screen::tutorial:
                 tutorialscreen();

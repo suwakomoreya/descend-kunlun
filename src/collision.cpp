@@ -19,7 +19,8 @@ void loadcollisions(const json&map){
             int x = (i%width) * tilewidth;
             int y = (i/width)*tilehiehgt;
             collision.push_back({(float)x,(float)y,(float)tilewidth,(float)tilehiehgt});
-        }
+        } 
+        // collisions using the json, every piece of data is on the "collide" funct
         return;
     }
 }
