@@ -64,6 +64,8 @@ player createplayer(float x, float y){
 
 void drawplayer(const player&p){
     DrawRectangleV(p.pos,p.size,p.color);
+    Rectangle playerblock = {p.pos.x,p.pos.y,p.size.x,p.size.y};
+    DrawRectangleLinesEx(playerblock,3.0f,RED);
 }
 void followplayer(Camera2D& cam, const  player&p, float lanecenterX){
     
@@ -78,7 +80,7 @@ void followplayer(Camera2D& cam, const  player&p, float lanecenterX){
 void updatepphysics(player&p, float dt){
 
     const float gravity = 700.0f;
-    const float jumpimpulse =500.0f;
+    const float jumpimpulse =450.0f;
     const float movespeed = 250.0f;
     
     p.vel.x = 0.0f; // leftrighties
@@ -89,12 +91,12 @@ void updatepphysics(player&p, float dt){
         p.vel.x = movespeed;
     }
 
-    if((IsKeyPressed(KEY_UP)|| IsKeyDown(KEY_SPACE) || IsKeyPressed(KEY_W))&& p.grounded){
+    if((IsKeyPressed(KEY_UP)|| IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_W)) && p.grounded){
         p.vel.y = -jumpimpulse;
         p.grounded = false;
     }
     // cut dat jump on release
-    if((IsKeyPressed(KEY_SPACE) || IsKeyReleased(KEY_UP) || IsKeyReleased(KEY_W))&& p.vel.y < 0.0f){
+    if((IsKeyReleased(KEY_SPACE) || IsKeyReleased(KEY_UP) || IsKeyReleased(KEY_W))&& p.vel.y < 0.0f){
         p.vel.y *= 0.5f;
     }
 
@@ -145,7 +147,8 @@ void updatepphysics(player&p, float dt){
 void tutorialscreen(){
     DrawText("How to Play", 40,150,50,WHITE);
     DrawRectangle(GetScreenWidth()/2-350,GetScreenHeight()/2-200,700,400,WHITE);
-    DrawText("A-D or Left Right on the arrow keys",GetScreenWidth()/2-300,450,20,BLACK);
+    DrawText("A-D or LEFT RIGHT on the arrow keys",GetScreenWidth()/2-300,450,20,BLACK);
+    DrawText("Space or UP to Jump",GetScreenHeight()/2-300,500,20,BLACK);
     if(IsKeyPressed(KEY_ESCAPE)){
         current = screen::menu;
     }

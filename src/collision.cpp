@@ -4,6 +4,8 @@
 using json =nlohmann::json;
 extern std::vector<Rectangle> collision;
 std::vector<Rectangle> collision;
+
+extern std::vector<Rectangle> terrain
 void loadcollisions(const json&map){
     for(const auto& layer : map["layers"]){
         if(layer["name"] != "collide"){

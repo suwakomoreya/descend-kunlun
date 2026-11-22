@@ -8,7 +8,7 @@ struct player{
     Vector2 vel;
     Vector2 size ={50,50};
     float speed;
-    Color color = RED;
+    Color color = WHITE;
     enum location{
         section1,
         section2,
