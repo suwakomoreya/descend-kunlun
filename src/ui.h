@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "game.h"
 #include "nlohmann/json.hpp"
+#include "collision.h"
 const int screenwidth = GetScreenWidth();
 const int screenheight = GetScreenHeight();
 using json = nlohmann::json;
@@ -59,18 +60,17 @@ player createplayer(float x, float y){
     p.keys = 0;
     return p;
 }
+
 void drawplayer(const player&p){
     DrawRectangleV(p.pos,p.size,p.color);
 }
 void followplayer(Camera2D& cam, const  player&p, float lanecenterX){
-    const float trigger = 400;
-    const float smooth = 3.0f;
-    float playerY = p.pos.y + p.size.y/2;
+    
+    float playery = p.pos.y + p.pos.y /2.0f;
+    float desired = std::max(playery,450.0f);
 
-    float desired = playerY + (screenheight/2.0f-trigger);
-    if(desired>screenheight/2.0f){
-        desired = screenheight/2.0f;
-    }
-    cam.target.y += (desired-cam.target.y)*smooth*GetFrameTime();
+    desired = std::min(desired,2688.0f-450.0f);
+    float smooth = 5.0f;
+    cam.target.y += (desired - cam.target.y) *smooth *GetFrameTime();
     cam.target.x = lanecenterX;
 }
