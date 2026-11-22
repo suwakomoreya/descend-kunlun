@@ -35,7 +35,7 @@ int main(){
 
         BeginDrawing();
         ClearBackground(BLACK);
-        
+
         switch(current){
             case screen::menu:
                 drawmenuui();

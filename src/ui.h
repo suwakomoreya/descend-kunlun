@@ -73,7 +73,7 @@ void followplayer(Camera2D& cam, const  player&p, float lanecenterX){
     cam.target.y += (desired - cam.target.y) *smooth *GetFrameTime();
     cam.target.x = lanecenterX;
 }
-void updatepphysics(player&p, float groundy, float dt){
+void updatepphysics(player&p, float dt){
 
     const float gravity = 700.0f;
     const float jumpimpulse =500.0f;
@@ -143,6 +143,6 @@ void updatepphysics(player&p, float groundy, float dt){
 void tutorialscreen(){
     DrawText("How to Play", 40,150,50,WHITE);
     DrawRectangle(GetScreenWidth()/2-350,GetScreenHeight()/2-200,700,400,WHITE);
-    DrawText("")
+    
 }
 
