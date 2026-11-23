@@ -145,8 +145,37 @@ void updatepphysics(player&p, float dt){
             playerbounds.y = p.pos.y;
         }
     }
-
+    for(const auto& block : spikes){
+        if(CheckCollisionRecs(playerbounds,block)){
+            p.dead = true;
+            if(p.Checkpoint == player::checkpoint::section1){
+                p.pos.x = 450.0f;
+                p.pos.y = 450.0f;
+            }
+            else if(p.Checkpoint == player::checkpoint::garden){
+                p.pos.x = 322.0f;
+                p.pos.y = 1358.0f;
+            }
+            else if(p.Checkpoint == player::checkpoint::section2){
+                p.pos.x = 390.0f;
+                p.pos.y = 1806.0f;
+            }
+            p.deathcount++;
+            p.dead = false;
+        }
+    }
+    for(auto it = keys.begin(); it !=keys.end();){
+        if(CheckCollisionRecs(playerbounds,*it)){
+            p.keys++;
+            it = keys.erase(it);
+            p.keycollected = true;
+        }
+        else{
+            ++it;
+        }
+    }
 }
+
 void tutorialscreen(){
     DrawText("How to Play", 40,150,50,WHITE);
     DrawRectangle(GetScreenWidth()/2-350,GetScreenHeight()/2-200,700,400,WHITE);
@@ -167,10 +196,24 @@ void testmode(player&p){
     DrawText(TextFormat("vel: %f,%f",velx,vely),50,90,30,GREEN);
     DrawText(TextFormat("Keys: %i", p.keys),50,140,30,RED);
 }
-
+void checkpoint(player&p){
+    if(p.pos.y < 974.0f){
+        p.Checkpoint = player::checkpoint::section1;
+    }
+    else if(p.pos.y >974.0f && p.pos.y < 1550.0f){
+        p.Checkpoint = player::checkpoint::garden;
+    }
+    else if(p.pos.y > 1550.0f){
+        p.Checkpoint = player::checkpoint::section2;
+    }
+}
 void drawcollide(){
     DrawTexture(map,0,0,WHITE);
 }
 void drawterrain(){
     DrawTexture(terrained,0,0,WHITE);
+}
+
+void gameoverscreen(player&p){
+    
 }

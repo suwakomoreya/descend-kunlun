@@ -8,4 +8,10 @@ void loadcollisions(const json& map);
 
 extern std::vector<Rectangle> terrain;
 void loadtterrain(const json& map);
+
+extern std::vector<Rectangle> spikes;
+void loadspikes(const json& map);
+
+extern std::vector<Rectangle> keys;
+void loadkeys(const json&map);
 void loadboundaries();

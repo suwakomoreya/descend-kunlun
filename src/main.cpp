@@ -23,6 +23,7 @@ int main(){
     cammain.zoom = 1.0f;
     int screenwidth = GetScreenWidth();
     int screenheight = GetScreenHeight();
+    player p1 = createplayer(50,50);
     std::fstream file(std::string(GetApplicationDirectory()) + "assets/mapped2.json");
     if(!file.is_open()){
             std::cerr << "failed to init map";
@@ -33,7 +34,8 @@ int main(){
     loadcollisions(map);
     loadboundaries();
     loadtterrain(map);
-    player p1 = createplayer(50,50);
+    loadspikes(map);
+    loadkeys(map);
     while(!WindowShouldClose() && running){
         if(current == screen::menu){
             menuui(p1);
@@ -43,25 +45,33 @@ int main(){
         BeginMode2D(cammain);
         ClearBackground(BLACK);
         // remove these after release, its just for testing.
-        testmode(p1);
         drawcollide();
+   
         switch(current){
             case screen::menu:
                 drawmenuui();
                 break;
             case screen::game:
-
+                
                 updatepphysics(p1,GetFrameTime());
                 followplayer(cammain,p1,screenwidth/2.0f);
-                
+                checkpoint(p1);
                 drawplayer(p1);
                 drawterrain();
                 for(const auto& block : collision){
-                    DrawRectangleLinesEx(block,1,RED);
+                    DrawRectangleLinesEx(block,1,WHITE);
                 }
                 for(const auto& block : terrain){
                     DrawRectangleLinesEx(block,1,LIGHTGRAY);
                 }
+
+                for(const auto& block : spikes){
+                    DrawRectangleLinesEx(block,1,RED);
+                }
+                for(const auto& key : keys){
+                    DrawRectangleLinesEx(key,1, GOLD);
+                }
+
                 EndMode2D();
                 if(IsKeyPressed(KEY_ESCAPE)){
                     current = screen::menu;
@@ -77,9 +87,13 @@ int main(){
         }
         
         DrawText("yoooohooo", 500,350,30, WHITE);
-        
-        
+        EndMode2D();
+        testmode(p1);
+        if(p1.keycollected == true){
+            
+        }
         EndDrawing();
+       
         if(IsKeyPressed(KEY_Q)){
             running = false;
         }
