@@ -133,16 +133,14 @@ void updatepphysics(player&p, float dt){
 
     for(const auto& block : collision){
         if(CheckCollisionRecs(playerbounds,block)){
-            if(p.vel.y>0){
-                //fall
-                p.pos.y = block.y-p.size.y;
-                p.grounded = true;
-            }   //collisionals
-            else if(p.vel.y<0){
-                p.pos.y = block.y + block.height;
+            if(p.vel.x > 0){
+                p.pos.x = block.x - p.size.x;
+
             }
-            p.vel.y=0;
-            playerbounds.y = p.pos.y;
+            else if (p.vel.x<0){
+                p.pos.x = block.x + block.width;
+            }
+            playerbounds.x = p.pos.x;
         }
     }
     for(const auto& block : gate1){

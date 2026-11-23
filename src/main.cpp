@@ -79,8 +79,10 @@ int main(){
                 for(const auto& block : gate1){
                     DrawRectangleLinesEx(block,1,BROWN);
                 }
-                for(const auto& block : gate2){
-                    DrawRectangleLinesEx(block,1,DARKBROWN);
+                if(p1.keys < 3){
+                    for(const auto& block : gate2){
+                        DrawRectangleLinesEx(block,1,DARKBROWN);
+                    }
                 }
                 EndMode2D();
                 if(IsKeyPressed(KEY_ESCAPE)){
