@@ -15,6 +15,8 @@ int main(){
     InitWindow(900,900, "Descent");
     map = LoadTexture(mappathz.c_str());
     terrained = LoadTexture(terrains.c_str());
+    gated1 = LoadTexture(gates1.c_str());
+    gated2 = LoadTexture(gates2.c_str());
     SetTargetFPS(60);
     SetExitKey(KEY_NULL);
     
@@ -51,7 +53,12 @@ int main(){
         ClearBackground(BLACK);
         // remove these after release, its just for testing.
         drawcollide();
-   
+        if(p1.keys < 3){
+            drawgate1();
+        }
+        if(p1.keys<5){
+            drawgate2();
+        }
         switch(current){
             case screen::menu:
                 drawmenuui();
@@ -76,15 +83,18 @@ int main(){
                 for(const auto& key : keys){
                     DrawRectangleLinesEx(key,1, GOLD);
                 }
-                for(const auto& block : gate1){
-                    DrawRectangleLinesEx(block,1,BROWN);
+                if(p1.keys<3){
+                    for(const auto& block : gate1){
+                        DrawRectangleLinesEx(block,1,BROWN);
+                    }
                 }
-                if(p1.keys < 3){
+                if(p1.keys < 5){
                     for(const auto& block : gate2){
                         DrawRectangleLinesEx(block,1,DARKBROWN);
                     }
                 }
-                EndMode2D();
+               
+                
                 if(IsKeyPressed(KEY_ESCAPE)){
                     current = screen::menu;
                 }

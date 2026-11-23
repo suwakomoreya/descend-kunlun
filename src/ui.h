@@ -10,10 +10,14 @@ using json = nlohmann::json;
 // void drawbg (youre gonna use a 1800x7200 image bro split dat into 4 later so u can render it teh same way you did for bouldering)
 std::string mappathz = std::string(GetApplicationDirectory()) + "assets/mapped2.png";
 std::string terrains = std::string(GetApplicationDirectory()) + "assets/terrains.png";
-
+std::string gates1 = std::string(GetApplicationDirectory()) + "assets/gate1.png";
+std::string gates2 = std::string(GetApplicationDirectory()) + "assets/gate2.png";
 Camera2D cammain = {0};
 Texture2D map;
 Texture2D terrained;
+Texture2D gated1;
+Texture2D gated2;
+
 const int count = 3;
 int selected =0;
 const char*items[] ={
@@ -116,7 +120,7 @@ void updatepphysics(player&p, float dt){
             if(p.vel.x > 0){
                 p.pos.x = block.x - p.size.x;
 
-            }
+            } // X AXIS (AGAINST A WALL)
             else if(p.vel.x<0){
                 p.pos.x = block.x + block.width;
             }
@@ -124,38 +128,55 @@ void updatepphysics(player&p, float dt){
         }
     }
 
-    p.pos.y += p.vel.y *dt;
+   p.pos.y += p.vel.y * dt;
 
-    p.grounded = false;
+p.grounded = false;
 
-    playerbounds = {p.pos.x,p.pos.y,
-        p.size.x,p.size.y};
+playerbounds = {
+    p.pos.x,
+    p.pos.y,
+    p.size.x,
+    p.size.y
+};
 
-    for(const auto& block : collision){
-        if(CheckCollisionRecs(playerbounds,block)){
-            if(p.vel.x > 0){
+for(const auto& block : collision){
+    if(CheckCollisionRecs(playerbounds, block)){
+
+        if(p.vel.y > 0){
+            // falling onto a platform/floor
+            p.pos.y = block.y - p.size.y;
+            p.grounded = true; // Y AXIS  OR ONTOP
+        }
+        else if(p.vel.y < 0){
+            // Hitting a ceiling
+            p.pos.y = block.y + block.height;
+        }
+        p.vel.y = 0;
+        playerbounds.y = p.pos.y;
+    }
+}
+    
+    for(const auto& block : gate1){
+        if(p.keys < 3 && CheckCollisionRecs(playerbounds, block)){
+            if(p.vel.x > 0)
                 p.pos.x = block.x - p.size.x;
-
-            }
-            else if (p.vel.x<0){
+            else if(p.vel.x < 0)
                 p.pos.x = block.x + block.width;
-            }
+
+            p.vel.x = 0;
             playerbounds.x = p.pos.x;
         }
     }
-    for(const auto& block : gate1){
-        if(p.keys<3){
-            if(CheckCollisionRecs(playerbounds,block)){
-                if(p.vel.y>0){
-                    p.pos.y = block.y-p.size.y;
-                    p.grounded = true;
-                }
-                else if(p.vel.y<0){
-                    p.pos.y = block.y + block.height;
-                }
-                p.vel.y=0;
-                playerbounds.y=p.pos.y;
-            }
+
+    for(const auto& block : gate2){
+        if(p.keys < 5 && CheckCollisionRecs(playerbounds, block)){
+            if(p.vel.x > 0)
+                p.pos.x = block.x - p.size.x;
+            else if(p.vel.x < 0)
+                p.pos.x = block.x + block.width;
+
+            p.vel.x = 0;
+            playerbounds.x = p.pos.x;
         }
     }
     for(const auto& block : spikes){
@@ -230,7 +251,12 @@ void drawcollide(){
 void drawterrain(){
     DrawTexture(terrained,0,0,WHITE);
 }
-
+void drawgate1(){
+    DrawTexture(gated1,0,0,WHITE);
+}
+void drawgate2(){
+    DrawTexture(gated2,0,0,WHITE);
+}
 void gameoverscreen(player&p){
     
 }
