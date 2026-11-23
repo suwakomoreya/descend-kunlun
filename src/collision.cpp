@@ -31,7 +31,7 @@ void loadcollisions(const json&map){
     }
 }
 
-void loadtterain(const json&map){
+void loadtterrain(const json&map){
     for(const auto& layer : map["layers"]){
         if(layer["name"] != "terrain"){
             continue;
@@ -50,4 +50,15 @@ void loadtterain(const json&map){
         }
         return;
     }
+}
+
+void loadboundaries(){
+    float mapwidth = 900;
+    float mapheight = 2688;
+    float wallthickness = 100;
+    float phase = 25;
+    float leftbound = -phase;
+    float rightbound = mapwidth +phase;
+    collision.push_back({leftbound-wallthickness,0,wallthickness,mapheight});
+    collision.push_back({rightbound,0,wallthickness,mapheight}); 
 }

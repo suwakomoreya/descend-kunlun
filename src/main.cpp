@@ -30,6 +30,7 @@ int main(){
     json map;
     file >>map;
     loadcollisions(map);
+    loadboundaries();
     loadtterrain(map);
     player p1 = createplayer(50,50);
     while(!WindowShouldClose() && running){
