@@ -22,7 +22,7 @@ int main(){
     int screenwidth = GetScreenWidth();
     int screenheight = GetScreenHeight();
 
-    std::fstream file("assets/mapped.json");
+    std::fstream file("assets/mapped2.json");
     if(!file.is_open()){
             std::cerr << "failed to init map";
             return 1;
@@ -42,7 +42,7 @@ int main(){
         ClearBackground(BLACK);
         // remove these after release, its just for testing.
         testmode(p1);
-
+        drawcollide();
         switch(current){
             case screen::menu:
                 drawmenuui();
