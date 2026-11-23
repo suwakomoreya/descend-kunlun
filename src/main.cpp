@@ -8,7 +8,8 @@
 
 screen current = screen::menu;
 bool running = true;
-
+double messagetime = 0;
+bool messagestarted = false;
 
 int main(){
     InitWindow(900,900, "Descent");
@@ -24,6 +25,8 @@ int main(){
     int screenwidth = GetScreenWidth();
     int screenheight = GetScreenHeight();
     player p1 = createplayer(50,50);
+    p1.keys = 0;
+    
     std::fstream file(std::string(GetApplicationDirectory()) + "assets/mapped2.json");
     if(!file.is_open()){
             std::cerr << "failed to init map";
@@ -36,6 +39,8 @@ int main(){
     loadtterrain(map);
     loadspikes(map);
     loadkeys(map);
+    loadgate1(map);
+    loadgate2(map);
     while(!WindowShouldClose() && running){
         if(current == screen::menu){
             menuui(p1);
@@ -71,7 +76,12 @@ int main(){
                 for(const auto& key : keys){
                     DrawRectangleLinesEx(key,1, GOLD);
                 }
-
+                for(const auto& block : gate1){
+                    DrawRectangleLinesEx(block,1,BROWN);
+                }
+                for(const auto& block : gate2){
+                    DrawRectangleLinesEx(block,1,DARKBROWN);
+                }
                 EndMode2D();
                 if(IsKeyPressed(KEY_ESCAPE)){
                     current = screen::menu;
@@ -90,7 +100,18 @@ int main(){
         EndMode2D();
         testmode(p1);
         if(p1.keycollected == true){
-            
+            if(!messagestarted){
+                messagetime =GetTime();
+                messagestarted = true;
+            }
+          
+            if(GetTime() - messagetime < 5.0){
+                DrawText(TextFormat("Jades collected: %i/5", p1.keys),screenwidth/2-200,100,45,RED);
+            }
+            else{
+                p1.keycollected = false;
+                messagestarted = false;
+            }
         }
         EndDrawing();
        

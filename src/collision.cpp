@@ -15,6 +15,11 @@ std::vector<Rectangle> spikes;
 extern std::vector<Rectangle> keys;
 std::vector<Rectangle> keys;
 
+extern std::vector<Rectangle> gate1;
+std::vector <Rectangle> gate1;
+
+extern std::vector<Rectangle> gate2;
+std::vector <Rectangle> gate2;
 void loadcollisions(const json&map){
     for(const auto& layer : map["layers"]){
         if(layer["name"] != "collide"){
@@ -93,6 +98,45 @@ void loadkeys(const json& map){
             int x = (i%width) * tilewidth;
             int y = (i/width) * tileheight;
             keys.push_back({(float)x,(float)y,(float)tilewidth,(float)tileheight});
+        }
+        return;
+    }
+}
+void loadgate1(const json& map){
+    for(const auto& layer : map["layers"]){
+        if(layer["name"] != "gate1"){
+            continue;
+        }
+        int width = layer["width"];
+        int tilewidth = map["tilewidth"];
+        int tileheight = map["tileheight"];
+        const auto& data = layer["data"];
+        for(int i=0; i <data.size();i++){
+            if(data[i] ==0){
+                continue;
+            }
+            int x = (i%width) * tilewidth;
+            int y = (i/width) * tileheight;
+            gate1.push_back({(float)x,(float)y,(float)tilewidth,(float)tileheight});
+        }
+        return;
+    }
+}
+void loadgate2(const json& map){
+    for(const auto& layer : map["layers"]){
+        if(layer["name"]!= "gate2"){
+            continue;
+        }
+        int width = layer["width"];
+        int tilewidth = map["tilewidth"];
+        int tileheight = map["tileheight"];
+        const auto& data = layer["data"];
+        for(int i=0;i<data.size();i++){
+            if(data[i]==0){
+                continue;
+            }
+            int x = (i%width) * tilewidth;
+            int y = (i/width) * tileheight;
         }
         return;
     }

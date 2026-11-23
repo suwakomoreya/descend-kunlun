@@ -145,6 +145,21 @@ void updatepphysics(player&p, float dt){
             playerbounds.y = p.pos.y;
         }
     }
+    for(const auto& block : gate1){
+        if(p.keys<3){
+            if(CheckCollisionRecs(playerbounds,block)){
+                if(p.vel.y>0){
+                    p.pos.y = block.y-p.size.y;
+                    p.grounded = true;
+                }
+                else if(p.vel.y<0){
+                    p.pos.y = block.y + block.height;
+                }
+                p.vel.y=0;
+                playerbounds.y=p.pos.y;
+            }
+        }
+    }
     for(const auto& block : spikes){
         if(CheckCollisionRecs(playerbounds,block)){
             p.dead = true;
@@ -191,10 +206,14 @@ void testmode(player&p){
     float playery= p.pos.y;
     float velx = p.vel.x;
     float vely = p.vel.y;
-
-    DrawText(TextFormat("pos: %f,%f", playerx,playery),50,40,30,GREEN);
-    DrawText(TextFormat("vel: %f,%f",velx,vely),50,90,30,GREEN);
-    DrawText(TextFormat("Keys: %i", p.keys),50,140,30,RED);
+    Color c;
+    if(p.keys == 5){
+        c = GREEN;
+    }
+    else c = RED;
+    // DrawText(TextFormat("pos: %f,%f", playerx,playery),500,40,30,GREEN);
+    // DrawText(TextFormat("vel: %f,%f",velx,vely),500,90,30,GREEN);
+    DrawText(TextFormat("Keys: %i", p.keys),50,40,30,c);
 }
 void checkpoint(player&p){
     if(p.pos.y < 974.0f){
