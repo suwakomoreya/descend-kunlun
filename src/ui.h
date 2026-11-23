@@ -1,5 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>
+#include "bits/stdc++.h"
 #include "raylib.h"
 #include "game.h"
 #include "nlohmann/json.hpp"
@@ -8,13 +8,12 @@
 using json = nlohmann::json;
 //ui
 // void drawbg (youre gonna use a 1800x7200 image bro split dat into 4 later so u can render it teh same way you did for bouldering)
+std::string mappathz = std::string(GetApplicationDirectory()) + "assets/mapped2.png";
+std::string terrains = std::string(GetApplicationDirectory()) + "assets/terrains.png";
 
 Camera2D cammain = {0};
-Texture2D map = LoadTexture("assets/mapped2.png");
-Texture2D collide;
+Texture2D map;
 Texture2D terrained;
-Texture2D death;
-Texture2D collect;
 const int count = 3;
 int selected =0;
 const char*items[] ={
@@ -166,8 +165,12 @@ void testmode(player&p){
 
     DrawText(TextFormat("pos: %f,%f", playerx,playery),50,40,30,GREEN);
     DrawText(TextFormat("vel: %f,%f",velx,vely),50,90,30,GREEN);
+    DrawText(TextFormat("Keys: %i", p.keys),50,140,30,RED);
 }
 
 void drawcollide(){
-    DrawTexture(map,0,0,BLACK);
+    DrawTexture(map,0,0,WHITE);
+}
+void drawterrain(){
+    DrawTexture(terrained,0,0,WHITE);
 }

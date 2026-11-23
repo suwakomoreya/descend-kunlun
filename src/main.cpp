@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "bits/stdc++.h"
 #include "raylib.h"
 #include "ui.h"
 #include "game.h"
@@ -12,17 +12,18 @@ bool running = true;
 
 int main(){
     InitWindow(900,900, "Descent");
+    map = LoadTexture(mappathz.c_str());
+    terrained = LoadTexture(terrains.c_str());
     SetTargetFPS(60);
     SetExitKey(KEY_NULL);
     
-    cammain.target = {450,75};
+    cammain.target = {450,450};
     cammain.offset =  {450,450};
     cammain.rotation = 0.0f;
     cammain.zoom = 1.0f;
     int screenwidth = GetScreenWidth();
     int screenheight = GetScreenHeight();
-
-    std::fstream file("assets/mapped2.json");
+    std::fstream file(std::string(GetApplicationDirectory()) + "assets/mapped2.json");
     if(!file.is_open()){
             std::cerr << "failed to init map";
             return 1;
@@ -39,6 +40,7 @@ int main(){
         }
 
         BeginDrawing();
+        BeginMode2D(cammain);
         ClearBackground(BLACK);
         // remove these after release, its just for testing.
         testmode(p1);
@@ -48,10 +50,12 @@ int main(){
                 drawmenuui();
                 break;
             case screen::game:
+
                 updatepphysics(p1,GetFrameTime());
                 followplayer(cammain,p1,screenwidth/2.0f);
-                BeginMode2D(cammain);
+                
                 drawplayer(p1);
+                drawterrain();
                 for(const auto& block : collision){
                     DrawRectangleLinesEx(block,1,RED);
                 }

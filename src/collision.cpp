@@ -9,7 +9,8 @@ std::vector<Rectangle> collision;
 extern std::vector<Rectangle> terrain;
 std::vector<Rectangle> terrain;
 
-
+extern std::vector<Rectangle> spikes;
+std::vector<Rectangle> spikes;
 void loadcollisions(const json&map){
     for(const auto& layer : map["layers"]){
         if(layer["name"] != "collide"){
@@ -51,7 +52,23 @@ void loadtterrain(const json&map){
         return;
     }
 }
+void loadspikes(const json&map){
+    for(const auto& layer : map["layers"]){
+        if(layer["name"]!="oo evil harm"){
+            continue;
+        }
+        int width = layer["width"];
+        int tilewidth = map["tilewidth"];
+        int tileheight = map["tileheight"];
+        const auto& data = layer["data"];
+        for(int i=0;i<data.size();i++){
+            if(data[i] ==0){
+                continue;
+            }
 
+        }
+    }
+}
 void loadboundaries(){
     float mapwidth = 900;
     float mapheight = 2688;

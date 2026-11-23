@@ -48,7 +48,7 @@ if [[ "$RAYLIB" == auto ]]; then
   if grep -l 'raylib\.h' "${SRCS[@]}" >/dev/null 2>&1; then RAYLIB=1; fi
 fi
 
-INCLUDES=(-std=c++20 -Wall -Wextra -I. -I"$HOME/.local/include")
+INCLUDES=(-std=c++17 -Wall -Wextra -I. -I"$HOME/.local/include")
 LIBS=()
 
 if [[ "$MODE" == win ]]; then
@@ -61,6 +61,6 @@ else
   if ((RAYLIB)); then LIBS=(-L"$HOME/.local/lib" -lraylib -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo); fi
 fi
 
-echo "==> $CXX -std=c++20 ${SRCS[*]} -o $OUT"
+echo "==> $CXX -std=c++17 ${SRCS[*]} -o $OUT"
 "$CXX" "${INCLUDES[@]}" "${SRCS[@]}" -o "$OUT" "${LIBS[@]}"
 echo "==> built $OUT"
