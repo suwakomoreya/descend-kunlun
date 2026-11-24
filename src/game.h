@@ -32,7 +32,9 @@ enum class screen {
     menu,
     tutorial,
     game,
+    gameover,
     exit
 }; 
 extern screen current;
 extern bool running;
+extern float gametimerun;

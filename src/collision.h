@@ -14,6 +14,7 @@ void loadspikes(const json& map);
 
 extern std::vector<Rectangle> keys;
 void loadkeys(const json&map);
+void resetkeys(const json&map);
 
 extern std::vector<Rectangle> gate1;
 void loadgate1(const json&map);

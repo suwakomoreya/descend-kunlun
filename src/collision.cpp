@@ -102,6 +102,10 @@ void loadkeys(const json& map){
         return;
     }
 }
+void resetkeys(const json& map){
+    keys.clear();
+    loadkeys(map);
+}
 void loadgate1(const json& map){
     for(const auto& layer : map["layers"]){
         if(layer["name"] != "gate1"){
@@ -132,11 +136,12 @@ void loadgate2(const json& map){
         int tileheight = map["tileheight"];
         const auto& data = layer["data"];
         for(int i=0;i<data.size();i++){
-            if(data[i]==0){
+            if(data[i]==0){ 
                 continue;
             }
             int x = (i%width) * tilewidth;
             int y = (i/width) * tileheight;
+            gate2.push_back({(float)x,(float)y,(float)tilewidth,(float)tileheight});
         }
         return;
     }

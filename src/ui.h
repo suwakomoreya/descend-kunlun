@@ -12,14 +12,20 @@ std::string mappathz = std::string(GetApplicationDirectory()) + "assets/mapped2.
 std::string terrains = std::string(GetApplicationDirectory()) + "assets/terrains.png";
 std::string gates1 = std::string(GetApplicationDirectory()) + "assets/gate1.png";
 std::string gates2 = std::string(GetApplicationDirectory()) + "assets/gate2.png";
+std::string keyimg = std::string(GetApplicationDirectory()) + "assets/keys.png";
+std::string kreskapath = std::string(GetApplicationDirectory()) + "assets/kreska_art_20261123_155238_v1.6.11.png";
 Camera2D cammain = {0};
 Texture2D map;
 Texture2D terrained;
 Texture2D gated1;
 Texture2D gated2;
+Texture2D keysz;
+Texture2D kreskart;
 
 const int count = 3;
 int selected =0;
+const float playerstartx = 393.0f;
+const float playerstarty = 526.0f;
 const char*items[] ={
     "Descend",
     "Tutorial",
@@ -36,8 +42,9 @@ void menuui(player&p){
     if(IsKeyPressed(KEY_ENTER)){
         if(selected==0){
             current = screen::game;
-            p.pos.x = 393.0f;
-            p.pos.y = 526.0f;
+            p.pos.x = playerstartx;
+            p.pos.y = playerstarty;
+            gametimerun = 0.0f;
         }
         if(selected==1){
             current = screen::tutorial;
@@ -49,7 +56,7 @@ void menuui(player&p){
 }
 
 void drawmenuui(){
-    DrawText("Descent to Immortality", 40,150 ,50,WHITE);
+    DrawText("Descending kunlun", 40,150 ,50,WHITE);
     for(int i =0;i<count;i++){
         int x = 70;
         int y = 220 + i*70;
@@ -64,8 +71,13 @@ void drawmenuui(){
 player createplayer(float x, float y){
     player p;
     p.pos = {x,y};
+    p.vel = {0,0};
     p.speed = 40;
     p.keys = 0;
+    p.deathcount = 0;
+    p.dead = false;
+    p.grounded = false;
+    p.keycollected = false;
     return p;
 }
 
@@ -169,14 +181,19 @@ for(const auto& block : collision){
     }
 
     for(const auto& block : gate2){
-        if(p.keys < 5 && CheckCollisionRecs(playerbounds, block)){
-            if(p.vel.x > 0)
-                p.pos.x = block.x - p.size.x;
-            else if(p.vel.x < 0)
-                p.pos.x = block.x + block.width;
+        if(CheckCollisionRecs(playerbounds, block)){
+            if(p.keys < 5){
+                if(p.vel.x > 0)
+                    p.pos.x = block.x - p.size.x;
+                else if(p.vel.x < 0)
+                    p.pos.x = block.x + block.width;
 
-            p.vel.x = 0;
-            playerbounds.x = p.pos.x;
+                p.vel.x = 0;
+                playerbounds.x = p.pos.x;
+            }
+            else{
+                current = screen::gameover;
+            }
         }
     }
     for(const auto& block : spikes){
@@ -214,10 +231,8 @@ void tutorialscreen(){
     DrawText("How to Play", 40,150,50,WHITE);
     DrawRectangle(GetScreenWidth()/2-350,GetScreenHeight()/2-200,700,400,WHITE);
     DrawText("A-D or LEFT RIGHT on the arrow keys",GetScreenWidth()/2-300,450,20,BLACK);
-    DrawText("Space or UP to Jump",GetScreenHeight()/2-300,500,20,BLACK);
-    if(IsKeyPressed(KEY_ESCAPE)){
-        current = screen::menu;
-    }
+    DrawText("Space or UP to Jump.",GetScreenHeight()/2-300,500,20,BLACK);
+    DrawText("Collect the keys hidden around the map and enter the opened gates",GetScreenHeight()/2-300,550,20,BLACK);
 }
 
 void testmode(player&p){
@@ -232,7 +247,7 @@ void testmode(player&p){
     else c = RED;
     // DrawText(TextFormat("pos: %f,%f", playerx,playery),500,40,30,GREEN);
     // DrawText(TextFormat("vel: %f,%f",velx,vely),500,90,30,GREEN);
-    DrawText(TextFormat("Keys: %i", p.keys),50,40,30,c);
+    DrawText(TextFormat("Keys: %i/5", p.keys),50,40,30,c);
 }
 void checkpoint(player&p){
     if(p.pos.y < 974.0f){
@@ -244,6 +259,9 @@ void checkpoint(player&p){
     else if(p.pos.y > 1550.0f){
         p.Checkpoint = player::checkpoint::section2;
     }
+}
+void drawbg(){
+    DrawTexture(kreskart,0,0,WHITE);
 }
 void drawcollide(){
     DrawTexture(map,0,0,WHITE);
@@ -257,6 +275,10 @@ void drawgate1(){
 void drawgate2(){
     DrawTexture(gated2,0,0,WHITE);
 }
+void drawkeys(){
+    DrawTexture(keysz,0,0,WHITE);
+}
 void gameoverscreen(player&p){
-    
+    DrawText("You win!", 40,150,50,WHITE);
+    DrawText(TextFormat("Time taken: %i", (int)gametimerun), 40,230,35,RED);
 }
